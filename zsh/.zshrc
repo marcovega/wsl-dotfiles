@@ -130,3 +130,5 @@ source $ZSH/oh-my-zsh.sh
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+export PATH="$HOME/.config/composer/vendor/bin:$PATH"
+alias sail="[ -f sail ] && sh sail || sh vendor/bin/sail"

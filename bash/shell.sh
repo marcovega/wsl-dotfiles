@@ -1,64 +1,44 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
-sudo apt update && sudo apt install -y \
-  apt-transport-https \
-  unzip \
-  ca-certificates \
-  curl \
-  software-properties-common \
-  git \
-  make \
-  tig \
-  tree \
-  stow \
-  zsh
+echo "Setting up shell environment..."
 
 # install oh-my-zsh (non-interactive)
 if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
+  echo "Installing oh-my-zsh..."
   RUNZSH=no KEEP_ZSHRC=yes \
     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  echo "oh-my-zsh installed successfully!"
+else
+  echo "oh-my-zsh already installed, skipping..."
 fi
 
 # install fnm
+echo "Installing fnm..."
 curl -fsSL https://fnm.vercel.app/install | bash
 
 # inject fnm to .zshrc if missing
 FNM_BLOCK='export PATH="$HOME/.fnm:$PATH"
 eval "$(fnm env)"'
-grep -q 'fnm env' ~/.zshrc || echo "$FNM_BLOCK" >> ~/.zshrc
+if ! grep -q 'fnm env' ~/.zshrc; then
+  echo "Adding fnm configuration to .zshrc..."
+  echo "$FNM_BLOCK" >> ~/.zshrc
+else
+  echo "fnm configuration already present in .zshrc"
+fi
 
 # install zsh plugins
 ZSH_CUSTOM=${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}
+
+echo "Installing zsh plugins..."
 [[ -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]] || \
   git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
+
 [[ -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]] || \
   git clone https://github.com/zsh-users/zsh-syntax-highlighting $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
 
 # install powerlevel10k
+echo "Installing powerlevel10k theme..."
 [[ -d "$ZSH_CUSTOM/themes/powerlevel10k" ]] || \
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
 
-# stow dotfiles
-for dir in *(/); do
-  [[ $dir =~ ^(vscode|windows)$ ]] && continue
-
-  if read -q "choice?do you want to symlink $dir using stow? (y/n) "; then
-    stow -v -t ~/ -S $dir
-    echo " - $dir installed."
-  else
-    echo " - skipping $dir."
-  fi
-done
-
-NEWLINE=$'\n'
-
-# vscode ext install
-if read -q "choice?${NEWLINE}do you want to install the visual studio code extensions listed below?${NEWLINE}$(cat vscode/extensions.linux)?${NEWLINE}(y/n): "; then
-  echo $NEWLINE
-
-  cat vscode/extensions.linux | while read extension || [[ -n $extension ]]; do
-    code --install-extension $extension --force
-  done
-else
-  echo " skipping."
-fi
+echo "Shell setup completed successfully!" 
