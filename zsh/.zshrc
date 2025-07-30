@@ -8,7 +8,13 @@ fi
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
 # fnm
-export PATH=/home/daniell/.fnm:$PATH
+FNM_PATH="/home/kito/.local/share/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="$FNM_PATH:$PATH"
+  eval "`fnm env`"
+fi
+
+# fnm
 eval "`fnm env`"
 
 # If you come from bash you might have to change your $PATH.

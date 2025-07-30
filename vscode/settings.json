@@ -5,7 +5,7 @@
   "editor.cursorBlinking": "phase",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.emptySelectionClipboard": false,
-  "editor.fontFamily": "Cascadia Code NF",
+  "editor.fontFamily": "Hack Nerd Font Mono",
   "editor.fontLigatures": "'ss01', 'ss02', 'ss03', 'ss19', 'ss20'",
   "editor.formatOnSave": true,
   "editor.guides.indentation": false,
@@ -63,5 +63,7 @@
   "[rust]": {
     "editor.defaultFormatter": "rust-lang.rust-analyzer"
   },
-  "update.showReleaseNotes": false
+  "update.showReleaseNotes": false,
+  "bracket-pair-colorizer-2.depreciation-notice": false,
+  "workbench.secondarySideBar.defaultVisibility": "hidden"
 }
