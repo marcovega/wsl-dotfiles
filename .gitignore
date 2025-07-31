@@ -1,0 +1,2 @@
+# SSH connections (contains sensitive IPs and usernames)
+zsh/.env.ssh-connections
